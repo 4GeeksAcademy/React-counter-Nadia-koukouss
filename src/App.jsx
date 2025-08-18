@@ -1,35 +1,60 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
+import { useEffect, useState } from "react";
+import "./App.css";
+import SecondsCounter from "./SecondsCounter";
 
 function App() {
-  const [count, setCount] = useState(0)
+  const [seconds, setSeconds] = useState(0);
+  const [running, setRunning] = useState(true);
+  const [mode, setMode] = useState("normal");
+
+  useEffect(() => {
+    if (running) {
+      const intervalId = setInterval(() => {
+        if (mode === "normal") {
+          setSeconds((second) => second + 1);
+        } else if (mode === "countDown") {
+          setSeconds((second) => {
+            if (second <= 1) {
+              setRunning(false);
+              return 0;
+            }
+            return second - 1;
+          });
+        }
+      }, 1000);
+      return () => clearInterval(intervalId);
+    }
+  }, [running, mode]);
+
+  const handleStop = () => {
+    setRunning(false);
+  };
+
+  const handleResume = () => {
+    setRunning(true);
+  };
+
+  const handleReset = () => {
+    setSeconds(0);
+  };
+  const handleCountDown = () => {
+    setMode("countDown");
+    setSeconds(10);
+    setRunning(true);
+  };
 
   return (
     <>
-      <div>
-        <a href="https://vite.dev" target="_blank">
-          <img src={viteLogo} className="logo" alt="Vite logo" />
-        </a>
-        <a href="https://react.dev" target="_blank">
-          <img src={reactLogo} className="logo react" alt="React logo" />
-        </a>
-      </div>
-      <h1>Vite + React</h1>
-      <div className="card">
-        <button onClick={() => setCount((count) => count + 1)}>
-          count is {count}
-        </button>
-        <p>
-          Edit <code>src/App.jsx</code> and save to test HMR
-        </p>
-      </div>
-      <p className="read-the-docs">
-        Click on the Vite and React logos to learn more
-      </p>
+      <SecondsCounter
+        seconds={seconds}
+        handleStop={handleStop}
+        handleResume={handleResume}
+        handleReset={handleReset}
+        handleCountDown={handleCountDown}
+        mode={mode}
+      ></SecondsCounter>
     </>
-  )
+  );
 }
 
-export default App
+export default App;
