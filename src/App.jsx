@@ -6,6 +6,7 @@ function App() {
   const [seconds, setSeconds] = useState(0);
   const [running, setRunning] = useState(true);
   const [mode, setMode] = useState("normal");
+  const [time, setTime] = useState("");
 
   useEffect(() => {
     if (running) {
@@ -26,6 +27,12 @@ function App() {
     }
   }, [running, mode]);
 
+  useEffect(() => {
+    if (time === seconds) {
+      alert("Has llegado al tiempo establecido");
+    }
+  }, [time, seconds]);
+
   const handleStop = () => {
     setRunning(false);
   };
@@ -42,6 +49,10 @@ function App() {
     setSeconds(10);
     setRunning(true);
   };
+  const handleChange = (e) => {
+    setTime(parseInt(e.target.value));
+    console.log(e.target.value);
+  };
 
   return (
     <>
@@ -52,6 +63,7 @@ function App() {
         handleReset={handleReset}
         handleCountDown={handleCountDown}
         mode={mode}
+        handleChange={handleChange}
       ></SecondsCounter>
     </>
   );

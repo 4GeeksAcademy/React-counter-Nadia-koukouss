@@ -4,6 +4,7 @@ const SecondsCounter = ({
   handleResume,
   handleReset,
   handleCountDown,
+  handleChange,
 }) => {
   return (
     <>
@@ -21,7 +22,12 @@ const SecondsCounter = ({
       <button className="btn btn-primary me-2" onClick={handleCountDown}>
         Cuenta regresiva (10s)
       </button>
-      <button className="btn btn-secondary me-2">Contador Normal</button>
+      <input
+        onChange={handleChange}
+        type="text"
+        className="form-control mt-4"
+        placeholder="Tiempo de alerta"
+      />
     </>
   );
 };
